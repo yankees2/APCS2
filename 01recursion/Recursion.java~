@@ -1,0 +1,30 @@
+public class recursion{
+    public String name(){
+	return "Won,Brian";
+    }
+
+    public int fact(int n){
+	return facthelper(n,n-1);
+    }
+
+    public int facthelper(int sofar,int next){
+	if (next==0){
+	    return sofar;
+	} else {
+	    return facthelper(sofar*next,next-1);
+	}
+    }
+
+    public int fib(int n){
+	if (n==0){
+	    return n;
+	} else if (n==1){
+	    return n;
+	}
+    }
+
+    public static void main(String[]args){
+	recursion a = new recursion();
+	System.out.println(a.fact(5));
+    }
+}
