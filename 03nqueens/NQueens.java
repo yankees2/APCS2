@@ -70,8 +70,8 @@ public class NQueens{
 
 		
     public boolean solve(int x,int y){
-	System.out.println(this);
-	wait(20);
+	//System.out.println(this);
+        //wait(20);
 	if (x == board.length){
 	    return true;
 	} else if (board[y][x].equals("Q")){
