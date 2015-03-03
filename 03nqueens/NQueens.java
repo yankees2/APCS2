@@ -135,12 +135,12 @@ public class NQueens{
 	return false;
     }
 
-    public static void main (String[]args){
-	NQueens a = new NQueens(8);
-        if (a.solve()){
-	    System.out.println(a);
-	} else {
-	    System.out.println("No solution");
+    public static void main(String[]arrr){
+	NQueens t = new NQueens(6);
+	if(t.solve()){
+	    System.out.println(t);
+	}else{
+	    System.out.println("Cannot solve");
 	}
     }
 }
