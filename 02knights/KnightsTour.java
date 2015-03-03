@@ -75,7 +75,7 @@ public class KnightsTour{
 
 		
     public boolean solve(int x,int y,int currentMoveNumber){
-	System.out.println(this);
+	//System.out.println(this);
 	//wait(20);
 	if (currentMoveNumber>board.length*board.length){
 	    return false;
@@ -96,12 +96,9 @@ public class KnightsTour{
 	return false;
     }
 
-    public static void main (String[]args){
-	KnightsTour a = new KnightsTour(Integer.parseInt(args[0]));
-        if (a.solve()){
-	    System.out.println(a);
-	} else {
-	    System.out.println("No solution");
-	}
+    public static void main(String[]arrr){
+	KnightsTour t = new KnightsTour(5);
+	t.solve(3,3);
+	System.out.println(t);
     }
 }
