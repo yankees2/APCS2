@@ -1,37 +1,87 @@
-public class Sorts{
-    private static int[] merged;
+import java.util.*;
+import java.io.*;
 
-    public static void merge(int[] one, int[] two){
-	merged = new int[one.length+two.length];
+public class Sorts{
+    
+    public static void mergesort(int[]array){
+	array = mergeH(array);
+    }
+
+    public static int[] mergeH(int[]whole){
+	if (whole.length==1){
+	    return whole;
+	}else{
+	    int[]x = new int[whole.length/2];
+	    int[]y = new int[whole.length - whole.length/2];
+	    int a = 0;
+	    while(a<whole.length){
+		if (a<whole.length/2){
+		    x[a] = whole[a];
+		}else{
+		    y[a-whole.length/2] = whole[a];
+		}
+		a++;
+	    }
+	    mergeH(x);
+	    mergeH(y);
+	    return merge(x,y);
+	}
+      
+    }
+	
+    
+    
+    public static int[] merge(int[]one, int[]two){
+	int[]twelve = new int[one.length+two.length];
 	int x = 0;
 	int y = 0;
 	int z = 0;
-	while (x<one.length && y<two.length && z<merged.length){
-	    if (one[x]<two[y]){
-		merged[z] = one[x];
-		x++;
+	while (z<twelve.length){
+	    if (x<one.length && y<two.length){
+		if (one[x]<two[y]){
+		    twelve[z] = one[x];
+		    z++;
+		    x++;
+		}else{
+		    twelve[z] = two[y];
+		    z++;
+		    y++;
+		}
+	    }else if(x==one.length && y<two.length){
+		twelve[z] = two[y];
 		z++;
-	    } else {
-		merged[z] = two[y];
 		y++;
+	    }else if(x<one.length && y==two.length){
+		twelve[z] = one[x];
 		z++;
+		x++;
 	    }
 	}
+	return twelve;
     }
-    
-    public static void main(String[]args){
+
+    public static void show(int[]hi){
+	String sorted = "[";
 	int x = 0;
-	int[] one = new int[5];
-	while (x<5){
-	    one[x] = x;
+	while (x<hi.length-1){
+	    sorted+=hi[x] + ",";
 	    x++;
 	}
-	int y = 0;
-	int[] two = new int[5];
-	while (y<5){
-	    two[y] = y+5;
-	    y++;
-	}
-	Sorts.merge(one, two);
+	sorted+=hi[x]+"]";
+	System.out.println(sorted);
     }
+
+    public static void main(String[]args){
+	Random rand = new Random();
+	int[]c = new int[10];
+	for(int i=0;i<c.length;i++){
+	    c[i] = rand.nextInt(30);
+	}
+	Sorts.show(c);
+	Sorts.mergesort(c);
+	Sorts.show(c);
+    }
+	    
+
 }
+		
