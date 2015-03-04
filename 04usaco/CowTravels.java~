@@ -29,6 +29,6 @@ public class CowTravels{
     }
 
     public static void main(String[] args){
-        System.out.println(move());
+	System.out.println(move());
     }
 }

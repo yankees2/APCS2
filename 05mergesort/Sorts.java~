@@ -1,0 +1,25 @@
+public class Sorts{
+    private static int[] merged;
+
+    public static void merge(int[] one, int[] two){
+	merged = new int[one.length+two.length];
+	int x = 0;
+	int y = 0;
+	int z = 0;
+	while (z<merged.length){
+	    if (one[x]<two[y]){
+		merged[z] = one[x];
+		x++;
+		z++;
+	    } else {
+		merged[z] = two[y];
+		y++;
+		z++;
+	    }
+	}
+    }
+    
+    public static void main(String[]args){
+	Sorts.merge({1,2,3,4},{5,6,7,8})
+    }
+}
