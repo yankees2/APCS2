@@ -12,7 +12,7 @@ public class Sorts{
 	    return whole;
 	}else{
 	    int[]x = new int[whole.length/2];
-	    int[]y = new int[whole.length - whole.length/2];
+	    int[]y = new int[whole.length - x.length];
 	    int a = 0;
 	    while(a<whole.length){
 		if (a<whole.length/2){
@@ -22,9 +22,7 @@ public class Sorts{
 		}
 		a++;
 	    }
-	    mergeH(x);
-	    mergeH(y);
-	    return merge(x,y);
+	    return merge(mergeH(x),mergeH(y));
 	}
       
     }
@@ -78,9 +76,7 @@ public class Sorts{
 	    c[i] = rand.nextInt(30);
 	}
 	Sorts.show(c);
-	Sorts.mergesort(c);
-	Sorts.show(c);
-    }
+	Sorts.show(Sorts.mergeH(c));    }
 	    
 
 }
