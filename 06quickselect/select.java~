@@ -1,0 +1,58 @@
+import java.util.*
+
+public class select{
+
+    public static void partition(int[] hi,int si, int ei){
+	int[] d = new int[hi.length];
+	int copy = 0;
+	int bruno = 0;
+	while (bruno<si){
+	    d[copy] = hi[bruno];
+	    bruno++;
+	    copy++;
+	}
+	int mars = ei+1;
+	while (mars<hi.length){
+	    d[copy] = hi[mars];
+	    mars++;
+	    copy++;
+	}
+	Random rand = new Random();
+	int pivot = rand.nextInt(ei-si) + si;
+	int part = si;
+	int end = ei;
+	while (part<=end){
+	    if (hi[part]<hi[pivot]){
+		d[si] = hi[part];
+		si++;
+	    }else if (hi[part]==hi[pivot]){
+	    }else{
+		d[ei] = hi[part];
+		ei--;
+	    }
+	    part++;
+	}
+	d[si] = hi[pivot];
+	hi = d;
+    }
+
+    public static void show(int[]yo){
+	String man = "[";
+	int x = 0;
+	while (x<yo.length-1){
+	    man+=yo[x]+",";
+	    x++;
+	}
+	man+=yo[x]+"]";
+	System.out.println(man);
+    }
+
+    public static void main(String[]args){
+	Random rand = new Random(1);
+	int[] sam = new int[10];
+	sam = {17,3,10,6,16,8,2,0,46,9};
+	select.show(sam);
+	select.partition(sam);
+	select.show(sam);
+	    
+}
