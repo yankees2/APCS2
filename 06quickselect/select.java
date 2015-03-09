@@ -2,18 +2,23 @@ import java.util.*;
 
 public class select{
 
-    public static void partition(int[] hi,int si, int ei){
+    public static void quickselect(int[] hi,int si, int ei){
 	int[] d = new int[hi.length];
-	int bruno = 0;
-	while (bruno<si){
-	    d[bruno] = hi[bruno];
-	    bruno++;
+	for(int i=0;i<hi.length;i++){
+	    if (i<si || i>ei){
+		d[i] = hi[i];
+	    }
 	}
-	int mars = ei+1;
-	while (mars<hi.length){
-	    d[mars] = hi[mars];
-	    mars++;
-	}
+	// int bruno = 0;
+	// while (bruno<si){
+	//     d[bruno] = hi[bruno];
+	//     bruno++;
+	// }
+	// int mars = ei+1;
+	// while (mars<hi.length){
+	//     d[mars] = hi[mars];
+	//     mars++;
+	// }
 	Random rand = new Random();
 	int pivot = rand.nextInt(ei-si) + si;
 	int part = si;
@@ -32,6 +37,25 @@ public class select{
 	d[si] = hi[pivot];
 	show(d);
 	System.out.println(hi[pivot]);
+    }
+
+    public static quickselect2(int[]ary,int si,int ei,int n){
+	Random rand = new Random();
+	int pivot = rand.nextInt(ei-si) + si;
+	int swap = ary[ei+1];
+	ary[ei+1]=ary[pivot];
+	ary[pivot]=swap;
+	for(int i=0;i<ei;i++){
+	    if (ary[i]>ary[ary.length-1]){
+		si=i;
+	    }
+	}
+	for(int i=ei;i>=0;i--){
+	    if (ary[i]<ary[ary.length-1]){
+		ei=i;
+	    }
+	}
+	
     }
 
     public static void show(int[]yo){
@@ -58,6 +82,6 @@ public class select{
 	sam[8] = 46;
 	sam[9] = 9;
 	select.show(sam);
-	select.partition(sam,0,9);
+	select.quickselect(sam,0,9);
     }
 }
