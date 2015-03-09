@@ -2,17 +2,17 @@ import java.util.*;
 
 public class select{
 
-    public static void partition(int[] hi,int si, int ei){
-	int[] d = new int[hi.length];
-	int bruno = 0;
-	while (bruno<si){
-	    d[bruno] = hi[bruno];
-	    bruno++;
+    public static int partition(int[] hi,int si, int ei,int n){
+	int a=si;
+	int b=ei;
+	if (si==ei){
+	    return hi[si];
 	}
-	int mars = ei+1;
-	while (mars<hi.length){
-	    d[mars] = hi[mars];
-	    mars++;
+	int[] d = new int[hi.length];
+	for (int i=0;i<hi.length;i++){
+	    if (i<si || i>ei){
+		d[i] = hi[i];
+	    }
 	}
 	Random rand = new Random();
 	int pivot = rand.nextInt(ei-si) + si;
@@ -30,10 +30,20 @@ public class select{
 	    part++;
 	}
 	d[si] = hi[pivot];
-	show(d);
-	System.out.println(hi[pivot]);
+	if (si==n){
+	    return d[si];
+	}else if (si<n){
+	    return partition(d,si,b,n);
+	}else if (si>n){
+	    return partition(d,a,ei,n);
+	}
+	return -1;
+	    
+	//show(d);
+	//System.out.println(hi[pivot]);
     }
 
+   
     public static void show(int[]yo){
 	String man = "[";
 	int x = 0;
@@ -47,17 +57,16 @@ public class select{
 
     public static void main(String[]args){
 	int[] sam = new int[10];
-	sam[0] = 17;
+	sam[0] = 7;
 	sam[1] = 3;
-	sam[2] = 10;
+	sam[2] = 5;
 	sam[3] = 6;
-	sam[4] = 16;
-	sam[5] = 8;
+	sam[4] = 4;
+	sam[5] = 1;
 	sam[6] = 2;
-	sam[7] = 0;
-	sam[8] = 46;
-	sam[9] = 9;
-	select.show(sam);
-	select.partition(sam,0,9);
+	sam[7] = 9;
+	sam[8] = 0;
+	sam[9] = 8;
+	System.out.println(select.partition(sam,0,9,9));
     }
 }
