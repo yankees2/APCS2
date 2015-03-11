@@ -1,0 +1,33 @@
+public class LNode{
+    private int value;
+    private LNode next;
+
+    public LNode(int x,LNode n){
+	value=x;
+	next=n;
+    }
+
+    public LNode(int x){
+	value=x;
+	next=null;
+    }
+    
+    public LNode(){
+    }
+
+    public int getValue(){
+	return value;
+    }
+
+    public void setValue(int x){
+	value=x;
+    }
+
+    public LNode getNext(){
+	return next;
+    }
+
+    public void setNext(LNode n){
+	next=n;
+    }
+}
