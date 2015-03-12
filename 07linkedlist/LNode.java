@@ -30,4 +30,8 @@ public class LNode{
     public void setNext(LNode n){
 	next=n;
     }
+
+    public String toString(){
+	return ""+value;
+    }
 }
