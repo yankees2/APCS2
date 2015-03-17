@@ -115,9 +115,10 @@ public class MyLinkedList<T>{
     }
 
     public static void main (String[]args){
-	MyLinkedList<T> a=new MyLinkedList<T>();
-	a.add(10);
-	a.add("hello");
+	MyLinkedList<String> a=new MyLinkedList<String>();
+	a.add("Peace");
+	a.add("out");
+	System.out.println(a.set(1,"homie"));
 	System.out.println(a.toString());
     }
 
