@@ -2,6 +2,10 @@ public class LNode<T>{
     private T value;
     private LNode<T> next;
 
+    public String name(){
+	return "won.brian";
+    }
+
     public LNode(T x,LNode<T> n){
 	value=x;
 	next=n;
