@@ -117,14 +117,16 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
 
     public Iterator<T> iterator(){
-	return new MyLLIterator<T>();
+	return new MyLLIterator<T>(head);
     }
 
-    private class MyLLIterator<T>{
+    private class MyLLIterator<T> implements Iterator<T>{
 	LNode<T> holla;
 	
-	public MyLLIterator(){
-	    holla = head;
+	public MyLLIterator(LNode<T> start){
+	    LNode<T> a=new LNode<T>(start);
+	    holla=a;
+	    //how you do this part
 	}
 
         public boolean hasNext(){
@@ -132,8 +134,8 @@ public class MyLinkedList<T> implements Iterable<T>{
 	}
 
 	public T next(){
-	    //holla=holla.getNext();
-	    return holla.getNext().getValue();
+	    holla=holla.getNext();
+	    return holla.getValue();
 	}
 
 	public void remove(){
