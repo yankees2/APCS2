@@ -22,7 +22,7 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
 
     public T get(int index){
-	if (index<0 || index>size()){
+	if (index<0 || index>=size()){
 	    throw new IndexOutOfBoundsException();
 	}else{
 	    LNode<T> out=head;
@@ -36,7 +36,7 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
     
     public T set(int index,T value){
-	if (index<0 || index>size()){
+	if (index<0 || index>=size()){
 	    throw new IndexOutOfBoundsException();
 	}else{
 	    LNode<T> temp=head;
@@ -62,7 +62,7 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
 
     public void add(int index,T add){
-	if (index<0 || index>size()){
+	if (index<0 || index>=size()){
 	    throw new IndexOutOfBoundsException();
 	}else if(index==0){
 	    LNode<T> more=new LNode<T>(add);
@@ -81,7 +81,7 @@ public class MyLinkedList<T> implements Iterable<T>{
     }
 
     public T remove(int index){
-	if (index<0 || index>size()){
+	if (index<0 || index>=size()){
 	    throw new IndexOutOfBoundsException();
 	}else if(index==0){
 	    T out=head.getValue();
