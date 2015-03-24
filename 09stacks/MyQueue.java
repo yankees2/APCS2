@@ -10,7 +10,7 @@ public class MyQueue<T>{
     }
 
     public T dequeue(){
-	return queue.remove();
+	return queue.remove(0);
     }
 
     public String toString(){
