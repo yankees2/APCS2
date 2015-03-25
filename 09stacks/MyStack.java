@@ -13,7 +13,7 @@ public class MyStack<T>{
 	if(stack.size()==0){
 	    return null;
 	}
-	return stack.remove(size()-1);
+	return stack.remove(stack.size()-1);
     }
 
     public T peek(){
