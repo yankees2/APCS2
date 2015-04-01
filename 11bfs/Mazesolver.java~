@@ -2,7 +2,6 @@ import java.util.*;
 import java.io.*;
 public class Mazesolver{
 
-    private Deque<coordinate> frontier;
     private char[][]maze;
     private int maxx,maxy;
     private int startx,starty;
@@ -87,7 +86,34 @@ public class Mazesolver{
 	return hide()+invert()+go(0,0)+ans+"\n"+show();
     }
     
-    
+    public boolean solve(){
+	if(startx < 0){
+	    System.out.println("No starting point 'S' found in maze.");
+	    return false;
+	}else{
+	    maze[startx][starty]=' ';
+	    solve(startx,starty);
+	    return solve(startx,starty);
+	}
+    }
+
+    public boolean solve(int x,int y){
+	System.out.println(this);
+	wait(20);
+	//ASSIGNMENT IS TO COMPLETE THIS PART******************
+	if (maze[x][y] == 'E'){
+	    return true;
+	} else if (maze[x][y] == ' '){
+	    maze[x][y]  = '@';
+	    if (solve(x,y+1) || solve(x+1,y) || solve(x-1,y) || solve(x,y-1)){
+		return true;
+	    }
+	    maze[x][y] = '.';
+
+	}
+	//ASSIGNMENT IS TO COMPLETE THE PART ABOVE THIS******************
+	return false;//by default the maze didn't get solved
+    }
 
 
 }
