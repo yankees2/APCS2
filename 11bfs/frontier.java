@@ -23,6 +23,18 @@ public class frontier{
 	return list.size()>0;
     }
 
+    public String toString(){
+	int x=0;
+	String sup = "";
+	MyDeque<coordinate> temp = list;
+	while(x<list.size()){
+	    sup+=temp.removeFirst();
+	    x++;
+	}
+	return sup;
+
+    }
+
     public static void main(String[]args){
 	frontier a = new frontier(2);
 	a.add(new coordinate(1,2));

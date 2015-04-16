@@ -75,6 +75,14 @@ public class maze{
 	}
     }
 
+    public void wait(int millis){
+	try{
+	    Thread.sleep(millis);
+	}
+	catch (InterruptedException e){
+	}
+    }
+
     public boolean solveBFS(){
     	return solveBFS(false);
     }
@@ -98,19 +106,21 @@ public class maze{
 	boolean solved = false;
 	while(!solved && rest.hasNext()){
 	    if(animate && !solved){
+		wait(100);
 		System.out.println(toString(true));
 	    }
 	    coordinate next = rest.remove();
-	    if(maze[next.getX()][next.getY()]=='E'){
+	    if(maze[next.getY()][next.getX()]=='E'){
 		solved = true;
 		addToSolution(next);
-	    }else{
-		maze[next.getX()][next.getY()]='x';
+	    }else if(!(maze[next.getY()][next.getX()]=='#' || maze[next.getY()][next.getX()]=='x')){
+		maze[next.getY()][next.getX()]='x';
 		addToSolution(next);
 		for(coordinate p :getNeighbors(next)){
 		    rest.add(p);
 		}
 	    }
+	    System.out.println(rest.toString());
 	}
 	return solved;
     }
@@ -133,6 +143,7 @@ public class maze{
 	String hi = "";
 	while(x<solution.size()-1){
 	    hi+=solution.get(x)+"->";
+	    x++;
 	}
 	hi+=solution.get(solution.size()-1);
 	return hi;
