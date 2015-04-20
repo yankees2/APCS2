@@ -1,0 +1,27 @@
+public class frontier{
+    MyDeque<coordinate> list = new MyDeque<coordinate>();
+    int mode;
+    //1 is stack, 2 is queue
+
+    public frontier(int x){
+	mode=x;
+    }
+
+    public void add(coordinate coord){
+	list.addLast(coord);
+    }
+
+    public void remove(){
+	if(mode==1){
+	    list.removeLast();
+	}else{
+	    list.removeFirst();
+	}
+    }
+
+    public boolean hasNext(){
+	return list.size()>0;
+    }
+}
+
+    

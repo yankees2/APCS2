@@ -2,18 +2,16 @@ import java.util.*;
 import java.io.*;
 
 public class Maze{
+    private int startx,starty,maxx,maxy,endx,endy;
     private char[][] maze;
-    private int maxx, maxy;
-    private int startx, starty;
-    private int endx, endy;
-    private int solutionx, solutiony;
-    private Frontier frontier = new Frontier();
-    private int[][] solutionSet;
-    private int[] solution;
-    private int finalCount;
+    private frontier list;
+    private ArrayList<coordinate> solution = new ArrayList<coordinate>();
     private static final String clear =  "\033[2J";
     private static final String hide =  "\033[?25l";
     private static final String show =  "\033[?25h";
+    private String go(int x,int y){
+	return ("\033[" + x + ";" + y + "H");
+    }
 
     public String name(){
 	return "won.brian";
@@ -22,23 +20,30 @@ public class Maze{
     public Maze(String filename){
 	startx = -1;
 	starty = -1;
+	//read the whole maze into a single string first
 	String ans = "";
 	try{
 	    Scanner in = new Scanner(new File(filename));
+
+	    //keep reading next line
 	    while(in.hasNext()){
 		String line = in.nextLine();
 		if(maxy == 0){
+		    //calculate width of the maze
 		    maxx = line.length();
 		}
+		//every new line add 1 to the height of the maze
 		maxy++;
 		ans += line;
 	    }
 	}
 	catch(Exception e){
-	    System.out.println("File: " + filename + " not found.");
+	    System.out.println("File: " + filename + " could not be opened.");
 	    e.printStackTrace();
 	    System.exit(0);
 	}
+
+	//copy from the single string to a 2D array
 	maze = new char[maxx][maxy];
 	for(int i = 0; i < ans.length(); i++){
 	    char c = ans.charAt(i);
@@ -52,7 +57,6 @@ public class Maze{
 		endy = i / maxx;
 	    }
 	}
-	solutionSet = new int[maze.length][maze[0].length];
     }
 
     public String toString(){
@@ -69,154 +73,129 @@ public class Maze{
 	    }
 	}
 	return ans;
-   }
+    }
 
     public String toString(boolean animate){
 	if(animate){
-	    return clear + go(0, 0) + toString() + "\n" + show;
-	}
-	else{
+	    return clear+go(0,0)+toString()+"\n"+show;
+	}else{
 	    return toString();
 	}
-    }
-
-    private String go(int x, int y){
-	return ("\033[" + x + ";" + y + "H");
     }
 
     public void wait(int millis){
 	try{
 	    Thread.sleep(millis);
 	}
-	catch(InterruptedException e){
+	catch (InterruptedException e){
 	}
     }
 
     public boolean solveBFS(){
-	return solveBFS(false);
+    	return solveBFS(false);
     }
 
     public boolean solveDFS(){
-	return solveDFS(false);
+    	return solveDFS(false);
+    }
+
+    public boolean solveBest(){
+	return solveBest(false);
+    }
+
+    public boolean AStar(){
+	return solveAStar(false);
+    }
+
+    public boolean solveBFS(boolean animate){
+	return solve(animate,1);
     }
 
     public boolean solveDFS(boolean animate){
-	frontier.addLast(new Coordinate(startx, starty, 1));
-	while(frontier.getSize() != 0){
-	    if(animate){
-		System.out.println(this.toString(true));
+	return solve(animate,2);
+    }
+
+    public boolean solveBest(boolean animate){
+	return solve(animate,3);
+    }
+
+    public boolean solveAStar(boolean animate){
+	return solve(animate,4);
+    }
+
+    public boolean solve(boolean animate,int mode){
+	frontier rest = new frontier(mode);
+	coordinate start = new coordinate(startx,starty,endx,endy);
+	rest.add(start);
+	boolean solved = false;
+	while(!solved && rest.hasNext()){
+	    if(animate && !solved){
 		wait(30);
+		System.out.println(toString(true));
 	    }
-	    Coordinate A = frontier.removeLast();
-	    int x = A.getRow();
-	    int y = A.getCol();
-	    int[][] possibilities = {
-		{x, y+1},{x, y-1},{x-1, y},{x+1, y}
-	    };
-	    for(int[] possibility : possibilities){
-		if(maze[possibility[0]][possibility[1]] == 'E'){
-		    maze[x][y] = 'x';
-		    solutionSet[x][y] = A.getCount(); 
-		    solutionSet[possibility[0]][possibility[1]] = A.getCount()+1;
-		    solutionx = possibility[0];
-		    solutiony = possibility[1];
-		    finalCount = A.getCount()+1;
-		    solve(solutionx, solutiony, finalCount);
-		    return true;
-		}
-		if(maze[possibility[0]][possibility[1]] == ' '){
-		    solutionSet[x][y] = A.getCount();
-		    frontier.addLast(new Coordinate(possibility[0], possibility[1], A.getCount() + 1));
-		    maze[x][y] = 'x';
+	    coordinate next = rest.remove();
+	    if(maze[next.getY()][next.getX()]=='E'){
+		solved = true;
+		addToSolution(next);
+	    }else if(!(maze[next.getY()][next.getX()]=='#' || maze[next.getY()][next.getX()]=='x')){
+		maze[next.getY()][next.getX()]='x';
+		for(coordinate p :getNeighbors(next)){
+		    rest.add(p);
 		}
 	    }
 	}
-	return false;
+	showSolution();
+	System.out.println(toString());
+	System.out.println(solutionString());
+	return solved;
     }
 
-
-
-    public boolean solveBFS(boolean animate){
-	frontier.addLast(new Coordinate(startx, starty, 1));
-	while(frontier.getSize() != 0){
-	    if(animate){
-		System.out.println(this.toString(true));
-		wait(30);
-	    }
-	    Coordinate A = frontier.removeFirst();
-	    int x = A.getRow();
-	    int y = A.getCol();
-	    int[][] possibilities = {
-		{x, y+1},{x, y-1},{x-1, y},{x+1, y}
-	    };
-	    for(int[] possibility : possibilities){
-		if(maze[possibility[0]][possibility[1]] == 'E'){
-		    maze[x][y] = 'x';
-		    solutionSet[x][y] = A.getCount(); 
-		    solutionSet[possibility[0]][possibility[1]]=A.getCount()+1;
-		    solutionx = possibility[0];
-		    solutiony = possibility[1];
-		    finalCount = A.getCount()+1;
-		    solve(solutionx, solutiony, finalCount);
-		    return true;
-		}
-		if(maze[possibility[0]][possibility[1]] == ' '){
-		    solutionSet[x][y] = A.getCount();
-		    frontier.addLast(new Coordinate(possibility[0], possibility[1], A.getCount() + 1));
-		    maze[x][y] = 'x';
-		}
-	    }
-	}
-	return false;
-    }
-
-    public void empty(){
-	for(int i = 0; i < maze.length; i++){
-	    for(int a = 0; a < maze[i].length; a++){
-		if(i == startx && a == starty){
-		    maze[i][a] = 'S';
-		}
-		if(maze[i][a] == 'x'){
-		    maze[i][a] = ' ';
-		}
-	    }
+    public void showSolution(){
+	for(coordinate p:solution){
+	    maze[p.getY()][p.getX()]='P';
 	}
     }
 
-    public void solve(int x, int y, int finalCount){
-	solution = new int[finalCount*2+2];
-	solution[solution.length-1] = y;
-	solution[solution.length-2] = x;
-	int halfacoordinate = solution.length -3;
-	while(halfacoordinate > 0){
-	    int[][]possibilities = {
-		{x, y+1},{x, y-1},{x+1, y},{x-1, y}};
-	    for(int[]possibility : possibilities){
-		if(solutionSet[possibility[0]][possibility[1]] == finalCount-1){
-		    solution[halfacoordinate] = possibility[1];
-		    halfacoordinate--;
-		    solution[halfacoordinate] = possibility[0];
-		    x = possibility[0];
-		    y = possibility[1];
-		    halfacoordinate --;
-		    finalCount--;
-		}
-	    }
-	}
+    public coordinate[] getNeighbors(coordinate point){
+        coordinate[] nextTo = new coordinate[4];
+	nextTo[0] = new coordinate(point.getX(),point.getY()-1,endx,endy,point);
+	nextTo[1] = new coordinate(point.getX()+1,point.getY(),endx,endy,point);
+	nextTo[2] = new coordinate(point.getX(),point.getY()+1,endx,endy,point);
+	nextTo[3] = new coordinate(point.getX()-1,point.getY(),endx,endy,point);
+	return nextTo;
     }
 
-    public int[] solutionCoordinates(){
-	int [] actualSolution = new int [finalCount*2];
-	for(int i = 0; i < actualSolution.length; i++){
-	    actualSolution[i] = solution[i+2];
+    public void addToSolution(coordinate point){
+	while(point.getprev()!=null){
+	    solution.add(point);
+	    point=point.getprev();
 	}
-	return actualSolution;
+	solution.add(point);
     }
 
-    public static void main(String[]args){
-	Maze A = new Maze("data1.dat");
-	System.out.println(A.solveDFS(true));
-	A.empty();
-	System.out.println(Arrays.toString(A.solutionCoordinates()));
-    }			  
+    public String solutionString(){
+	int x = solution.size()-1;
+	String hi = "";
+	while(x>0){
+	    hi+=solution.get(x)+"->";
+	    x--;
+	}
+	hi+=solution.get(0);
+	return hi;
+    }
+
+    public static void main (String[]args){
+	Maze a = new Maze("data1.dat");
+	if(args[0].equals("1")){
+	    System.out.println(a.solveBFS(true));
+	}else if(args[0].equals("2")){
+	    System.out.println(a.solveDFS(true));
+	}else if(args[0].equals("3")){
+	    System.out.println(a.solveBest(true));
+	}else if(args[0].equals("4")){
+	    System.out.println(a.solveAStar(true));
+	}
+    }
 }
+
+    

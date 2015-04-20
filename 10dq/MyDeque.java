@@ -4,6 +4,10 @@ public class MyDeque<T>{
     private Object[] things;
     private int head, tail, size;
 
+    public String name(){
+	return "won.brian";
+    }
+
     public MyDeque(){
 	things=new Object[10];
     }
