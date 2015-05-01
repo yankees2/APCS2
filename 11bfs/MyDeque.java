@@ -2,10 +2,12 @@ import java.util.*;
 
 public class MyDeque<T>{
     private Object[] things;
+    private int[] weight;
     private int head, tail, size;
 
     public MyDeque(){
 	things=new Object[10];
+	weight = new int[100];
 	size=0;
     }
 
@@ -128,6 +130,36 @@ public class MyDeque<T>{
 	}
     }
 
+    public void add(T value,int x){
+	addLast(value);
+	weight[size-1]=x;
+    }
+
+    public int[] getweight(){
+	return weight;
+    }
+
+    public T removeSmallest(){
+	int smallest = weight[0];
+	int place = 0;
+	for(int x=0;x<size;x++){
+	    if(weight[x]<smallest){
+		smallest = weight[x];
+		place = x;
+	    }
+	}
+	for(int x=place;x<size-1;x++){
+	    weight[x] = weight[x+1];
+	}
+	T out = (T)things[place];
+	for(int x=place;x<size-1;x++){
+	    things[x] = things[x+1];
+	}
+	tail--;
+	size--;
+	return out;
+    }
+
     public int size(){
 	return size;
     }
@@ -146,17 +178,20 @@ public class MyDeque<T>{
 
     public static void main (String[]args){
 	MyDeque<String> a = new MyDeque<String>();
-	a.addLast("1");
-	a.addLast("2");
-	a.addLast("3");
-	a.addLast("4");
-	a.addLast("5");
-	a.addLast("6");
-	a.addLast("7");
-	a.addLast("8");
-	a.addLast("9");
-	a.addLast("10");
-	System.out.println(a.removeFirst());
-	System.out.println(a.size());
+	a.add("1",11);
+	a.add("2",12);
+	a.add("3",13);
+	a.add("4",14);
+	a.add("5",15);
+	a.add("6",16);
+	a.add("7",17);
+	a.add("8",18);
+	a.add("9",19);
+	a.add("10",20);
+	int x=0;
+	while(x<10){
+	    System.out.print(a.removeSmallest());
+	    x++;
+	}
     }
 }

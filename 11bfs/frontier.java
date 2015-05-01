@@ -1,18 +1,26 @@
 public class frontier{
     MyDeque<coordinate> list = new MyDeque<coordinate>();
     int mode;
-    //1 is stack, 2 is queue
+    //1 is queue, 2 is stack, 3 is best, 4 is astar
 
     public frontier(int x){
 	mode=x;
     }
 
     public void add(coordinate coord){
-	list.addLast(coord);
+	if(mode==4){
+	    list.add(coord,coord.getdist()+coord.getstep());
+	}else if(mode==3){
+	    list.add(coord,coord.getdist());
+	}else{
+	    list.addLast(coord);
+	}
     }
 
     public coordinate remove(){
-	if(mode==1){
+	if(mode==3 || mode==4){
+	    return list.removeSmallest();
+	}else if(mode==1){
 	    return list.removeLast();
 	}else{
 	    return list.removeFirst();
@@ -24,21 +32,13 @@ public class frontier{
     }
 
     public String toString(){
-	int x=0;
-	String sup = "";
-	MyDeque<coordinate> temp = list;
-	while(x<list.size()){
-	    sup+=temp.removeFirst();
-	    x++;
-	}
-	return sup;
-
+	return list.toString();
     }
 
     public static void main(String[]args){
 	frontier a = new frontier(2);
-	a.add(new coordinate(1,2));
-	a.add(new coordinate(2,3));
+	a.add(new coordinate(1,2,5,5));
+	a.add(new coordinate(2,3,5,5));
 	System.out.println(a.remove());
 	System.out.println(a.hasNext());
 	System.out.println(a.remove());
