@@ -34,4 +34,8 @@ public class BSTreeNode<T extends Comparable> {
     public void setRight( BSTreeNode<T> r ) {
 	right = r;
     }
+
+    public String toString(){
+	return ""+data;
+    }
 }
