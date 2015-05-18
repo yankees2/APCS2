@@ -22,11 +22,95 @@ public class MyHeap{
     }
 
     //make pushdown() then resize()
+    public void pushdown(int index){
+	if(!((index*2)>data[0])){
+	    if(isMax){
+		if(index*2==data[0]){
+		    if(data[index*2]>data[index]){
+			int temp = data[index];
+			data[index] = data[index*2];
+			data[index*2] = temp;
+		    }
+		}else if(data[index*2]>data[index] && data[index*2+1]>data[index]){
+		    if(data[index*2]>data[index*2+1]){
+			int temp = data[index];
+			data[index] = data[index*2];
+			data[index*2] = temp;
+			pushdown(index*2);
+		    }else{
+			int temp = data[index];
+			data[index] = data[index*2+1];
+			data[index*2+1] = temp;
+			pushdown(index*2+1);
+		    }
+		}else if(data[index*2]>data[index]){
+		    int temp = data[index];
+		    data[index] = data[index*2];
+		    data[index*2] = temp;
+		    pushdown(index*2);
+		}else if(data[index*2+1]>data[index]){
+		    int temp = data[index];
+		    data[index] = data[index*2+1];
+		    data[index*2+1] = temp;
+		    pushdown(index*2+1);
+		}
+	    }else{
+		if(index*2==data[0]){
+		    if(data[index*2]<data[index]){
+			int temp = data[index];
+			data[index] = data[index*2];
+			data[index*2] = temp;
+		    }
+		}else if(data[index*2]<data[index] && data[index*2+1]<data[index]){
+		    if(data[index*2]<data[index*2+1]){
+			int temp = data[index];
+			data[index] = data[index*2];
+			data[index*2] = temp;
+			pushdown(index*2);
+		    }else{
+			int temp = data[index];
+			data[index] = data[index*2+1];
+			data[index*2+1] = temp;
+			pushdown(index*2+1);
+		    }
+		}else if(data[index*2]<data[index]){
+		    int temp = data[index];
+		    data[index] = data[index*2];
+		    data[index*2] = temp;
+		    pushdown(index*2);
+		}else if(data[index*2+1]<data[index]){
+		    int temp = data[index];
+		    data[index] = data[index*2+1];
+		    data[index*2+1] = temp;
+		    pushdown(index*2+1);
+		}
+	    }
+	}
+    }
 
     public void add(int x){
 	data[data[0]+1]=x;
+	// boolean longer = true;
+	// for(int hi:data){
+	//     if(hi==0){
+	// 	longer = false;
+	//     }
+	// }
+	// if(longer){
+	//     resize();
+	// }
 	pushup(data[0]+1);
 	data[0]=data[0]+1;
+    }
+
+    public void resize(){
+	int[] temp = new int[(data[0]+1)*2];
+	int x = 0;
+	while(x<data[0]+1){
+	    temp[x] = data[x];
+	    x++;
+	}
+	data = temp;
     }
 
     public void pushup(int index){
@@ -67,6 +151,14 @@ public class MyHeap{
 	a.add(4);
 	a.add(1);
 	a.add(3);
+	a.add(5);
+	a.add(6);
+	a.add(7);
+	a.add(8);
+	a.add(9);
+	//a.add(10);
+	//a.add(11);
+
 	System.out.println(a.toString());
     }
 }
