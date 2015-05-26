@@ -11,6 +11,10 @@ public class MyHeap{
 	data = new int[10];
 	this.isMax = isMax;
     }
+    
+    public int size(){
+	return data[0];
+    }
 
     public int remove(){
 	int out = data[1];
